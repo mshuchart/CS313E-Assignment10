@@ -156,7 +156,6 @@ class Graph(object):
             new_row.append(0)
         self.adj_mat.append(new_row)
 
-
     def add_directed_edge(self, start, finish, weight=1):
         """Add weighted directed edge to graph"""
         self.adj_mat[start][finish] = weight
@@ -300,9 +299,29 @@ class Graph(object):
         Return a list of vertices after a topological sort
         this function should not print the list
         """
+
+        # Calculate the in-degrees of all vertices
+        in_degrees = {i: 0 for i in range(len(self.vertices))}
+        for u in range(len(self.vertices)):
+            for v in self.get_adj_vertexes(u):
+                in_degrees[v] += 1
+
+        # Initialize queue 
+        queue = deque([v for v in range(len(self.vertices)) if in_degrees[v] == 0])
         topo_list = []
 
-        # ADD YOUR CODE HERE! 
+        # Process each node 
+        while queue:
+            v = queue.popleft()
+            topo_list.append(self.vertices[v].get_label())
+            for neighbor in self.get_adj_vertexes(v):
+                in_degrees[neighbor] -= 1
+                if in_degrees[neighbor] == 0:
+                    queue.append(neighbor)
+        
+        # Check if sort is possible
+        if len(topo_list) != len(self.vertices):
+            return None 
       
         return topo_list
 

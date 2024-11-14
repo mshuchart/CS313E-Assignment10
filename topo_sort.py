@@ -100,7 +100,6 @@ class Vertex():
         self.label = label
         self.visited = False
 
-    
     def was_visited(self):
         """Determine if a vertex was visited"""
         return self.visited
@@ -114,7 +113,7 @@ class Vertex():
         return str(self.label)
 
 
-class Graph(object):
+class Graph():
     """A Class to present Graph."""
 
     def __init__(self):
@@ -255,7 +254,7 @@ class Graph(object):
         # visit the other vertices according to depth
         while not the_queue.is_empty():
             # get an adjacent unvisited vertex
-            u = self.get_adj_unvisited_vertex(the_queue.current())
+            u = self.get_adj_unvisited_vertex(the_queue.peek())
             if u == -1:
                 u = the_queue.dequeue()
             else:
@@ -306,17 +305,17 @@ class Graph(object):
             for v in self.get_adj_vertexes(u):
                 in_degrees[v] += 1
 
-        # Initialize queue 
+        # Initialize queue
         queue = Queue()
         zero_in_degree_vertices = sorted([v for v in range(len(self.vertices))
                                           if in_degrees[v] == 0],
                                           key=lambda idx: self.vertices[idx].get_label())
         for v in zero_in_degree_vertices:
             queue.enqueue(v)
-        
+
         topo_list = []
 
-        # Process each node 
+        # Process each node
         while not queue.is_empty():
             # Collect nodes to process at this level
             curr_level = []
@@ -324,7 +323,7 @@ class Graph(object):
             # Dequeue all nodes at the current level
             while not queue.is_empty():
                 curr_level.append(queue.dequeue())
-            
+
             # Sort current level
             curr_level.sort(key=lambda idx: self.vertices[idx].get_label())
 
@@ -335,11 +334,11 @@ class Graph(object):
                     in_degrees[neighbor] -= 1
                     if in_degrees[neighbor] == 0:
                         queue.enqueue(neighbor)
-        
+
         # Check if sort is possible
         if len(topo_list) != len(self.vertices):
-            return None 
-      
+            return None
+
         return topo_list
 
     def get_index2(self, label, vertices_copy):

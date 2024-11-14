@@ -317,10 +317,10 @@ class Graph(object):
         while not queue.is_empty():
             v = queue.dequeue()
             topo_list.append(self.vertices[v].get_label())
-            for neighbor in self.get_adj_vertexes(v):
-                in_degrees[neighbor] -= 1
-                if in_degrees[neighbor] == 0:
-                    queue.enqueue(neighbor)
+            for u in self.get_adj_vertexes(v):
+                in_degrees[u] -= 1
+                if in_degrees[u] == 0:
+                    queue.enqueue(u)
         
         # Check if sort is possible
         if len(topo_list) != len(self.vertices):

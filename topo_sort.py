@@ -308,19 +308,33 @@ class Graph(object):
 
         # Initialize queue 
         queue = Queue()
-        for v in range(len(self.vertices)):
-            if in_degrees[v] == 0:
-                queue.enqueue(v)
+        zero_in_degree_vertices = sorted([v for v in range(len(self.vertices))
+                                          if in_degrees[v] == 0],
+                                          key=lambda idx: self.vertices[idx].get_label())
+        for v in zero_in_degree_vertices:
+            queue.enqueue(v)
+        
         topo_list = []
 
         # Process each node 
         while not queue.is_empty():
-            v = queue.dequeue()
-            topo_list.append(self.vertices[v].get_label())
-            for u in self.get_adj_vertexes(v):
-                in_degrees[u] -= 1
-                if in_degrees[u] == 0:
-                    queue.enqueue(u)
+            # Collect nodes to process at this level
+            curr_level = []
+
+            # Dequeue all nodes at the current level
+            while not queue.is_empty():
+                curr_level.append(queue.dequeue())
+            
+            # Sort current level
+            curr_level.sort(key=lambda idx: self.vertices[idx].get_label())
+
+            # Process each node in the current level
+            for v in curr_level:
+                topo_list.append(self.vertices[v].get_label())
+                for neighbor in self.get_adj_vertexes(v):
+                    in_degrees[neighbor] -= 1
+                    if in_degrees[neighbor] == 0:
+                        queue.enqueue(neighbor)
         
         # Check if sort is possible
         if len(topo_list) != len(self.vertices):

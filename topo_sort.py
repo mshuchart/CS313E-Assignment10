@@ -238,9 +238,11 @@ class Graph(object):
 
     def has_cycle(self):
         """If the graph has cycle"""
-        # ADD YOUR CODE 
-
-        return 
+        # Call existing DFS function for each vertex to find any possible cycles
+        for v_index, _ in enumerate(self.vertices):
+            if self.dfs(v_index):
+                return True
+        return False
 
 
     def bfs(self, v):

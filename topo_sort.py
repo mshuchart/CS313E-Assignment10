@@ -4,15 +4,15 @@ Topological Sort Implementation
   File: topo_sort.py
   Description:
 
-  Student Name:
-  Student UT EID:
+  Student Name: Marissa Shuchart
+  Student UT EID: ms87339
 
-  Partner Name:
-  Partner UT EID:
+  Partner Name: Trinity Thompson
+  Partner UT EID: tyt242
 
   Course Name: CS 313E
-  Unique Number: 
-  Date Created:
+  Unique Number: 50165
+  Date Created: 11/13/2024
   Date Last Modified:
 
 """

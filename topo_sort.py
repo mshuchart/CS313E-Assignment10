@@ -307,17 +307,20 @@ class Graph(object):
                 in_degrees[v] += 1
 
         # Initialize queue 
-        queue = deque([v for v in range(len(self.vertices)) if in_degrees[v] == 0])
+        queue = Queue()
+        for v in range(len(self.vertices)):
+            if in_degrees[v] == 0:
+                queue.enqueue(v)
         topo_list = []
 
         # Process each node 
-        while queue:
-            v = queue.popleft()
+        while not queue.is_empty():
+            v = queue.dequeue()
             topo_list.append(self.vertices[v].get_label())
             for neighbor in self.get_adj_vertexes(v):
                 in_degrees[neighbor] -= 1
                 if in_degrees[neighbor] == 0:
-                    queue.append(neighbor)
+                    queue.enqueue(neighbor)
         
         # Check if sort is possible
         if len(topo_list) != len(self.vertices):
